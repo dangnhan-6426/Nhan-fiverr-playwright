@@ -1,0 +1,23 @@
+{
+  "name": "nhan-fiverr-playwright",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {},
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/dangnhan-6426/Nhan-fiverr-playwright.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/dangnhan-6426/Nhan-fiverr-playwright/issues"
+  },
+  "homepage": "https://github.com/dangnhan-6426/Nhan-fiverr-playwright#readme",
+  "devDependencies": {
+    "@playwright/test": "^1.59.1",
+    "@types/node": "^25.5.2"
+  }
+}
