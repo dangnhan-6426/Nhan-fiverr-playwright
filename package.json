@@ -3,7 +3,9 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "scripts": {},
+  "scripts": {
+    "test:register": "playwright test register --project=chromium --headed"
+  },
   "repository": {
     "type": "git",
     "url": "git+https://github.com/dangnhan-6426/Nhan-fiverr-playwright.git"
