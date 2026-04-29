@@ -4,7 +4,9 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test:register": "playwright test register --project=chromium --headed"
+    "test:register": "playwright test register --project=chromium --headed",
+    "test:logout": "playwright test tests/logout.spec.ts --project=chromium --headed"
+
   },
   "repository": {
     "type": "git",
