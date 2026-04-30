@@ -14,10 +14,7 @@ export class RegisterPage {
     readonly agreeCheckbox: Locator
     readonly registerButton: Locator
     
-    //Locator status message
-    readonly successToast: Locator
-    readonly nameError: Locator
-
+    //URL
     readonly url: string = 'https://demo4.cybersoft.edu.vn/register'
 
     constructor(page: Page) {
@@ -33,8 +30,7 @@ export class RegisterPage {
         this.femaleRadio = page.locator('#female')
         this.agreeCheckbox = page.locator('#agree-term')
         this.registerButton = page.locator('button[type="submit"]')
-        this.successToast = page.locator('div[role="alert"]').filter({hasText:'Đăng kí tài khoản thành công !'})
-        this.nameError = page.locator('span.text-danger').filter({ hasText:'Name không được bỏ trống'})
+        
     }
 
     //From submit
@@ -68,4 +64,18 @@ export class RegisterPage {
         return this.page.url() !== this.url
     }
 
+    //Create method for warning status register
+    getStatusPage(messageStatus:string){
+        return this.page.getByRole('alert').filter({ hasText: messageStatus})
+    }
+
+    //Create method for warning register from submit input
+    getFieldError(errorTextInput:string){
+        return this.page.locator('span.text-danger', { hasText: errorTextInput})
+    }
+
+    
+
+
+    
 }
