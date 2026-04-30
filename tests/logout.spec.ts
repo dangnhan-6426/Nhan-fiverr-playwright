@@ -1,9 +1,9 @@
-import { LoginPage } from './../pages/loginPage';
+import { LoginPage } from './../pages/Authentication/loginPage';
 import { test, expect } from "@playwright/test";
 
 test.describe('Logout FUnctionality', () => {
     test.beforeEach(async ({ page}) => {
-        //B1: Login successful
+        //Dependency Login successful
         const loginPage = new LoginPage(page)
         await loginPage.navigateToLoginPage()
         await loginPage.login('cao@gmail.com', '12345678')
