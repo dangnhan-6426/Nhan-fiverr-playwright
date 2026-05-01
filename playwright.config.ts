@@ -31,23 +31,26 @@ export default defineConfig({
     /* Collect trace when retrying the failed test. See https://playwright.dev/docs/trace-viewer */
     trace: 'on-first-retry',
     channel: 'chrome',
+    launchOptions: {
+      slowMo: 500, // mỗi action chậm lại 500ms
+    }
   },
 
   /* Configure projects for major browsers */
   projects: [
     {
       name: 'chromium',
-      use: { ...devices['Desktop Chrome'], slowMo: 1000 },
+      use: { ...devices['Desktop Chrome'] },
     },
 
     {
       name: 'firefox',
-      use: { ...devices['Desktop Firefox'], slowMo: 1000 },
+      use: { ...devices['Desktop Firefox'] },
     },
 
     {
       name: 'webkit',
-      use: { ...devices['Desktop Safari'], slowMo: 1000 },
+      use: { ...devices['Desktop Safari'] },
     },
 
     /* Test against mobile viewports. */

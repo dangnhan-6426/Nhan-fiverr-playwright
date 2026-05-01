@@ -5,6 +5,7 @@
   "main": "index.js",
   "scripts": {
     "test:register": "playwright test register --project=chromium --headed",
+    "test:register:snapshot": "playwright test register --project=chromium --headed --update-snapshots",
     "test:logout": "playwright test tests/logout.spec.ts --project=chromium --headed"
   },
   "repository": {
@@ -21,6 +22,7 @@
   "homepage": "https://github.com/dangnhan-6426/Nhan-fiverr-playwright#readme",
   "devDependencies": {
     "@playwright/test": "^1.59.1",
-    "@types/node": "^25.6.0"
+    "@types/node": "^25.6.0",
+    "typescript": "^6.0.3"
   }
 }

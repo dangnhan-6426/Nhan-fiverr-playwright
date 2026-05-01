@@ -1,9 +1,10 @@
 import { RegisterPage } from './../pages/Authentication/registerPage';
-import {test, expect} from 'playwright/test'
+import  { test, expect } from '@playwright/test';
+
 
 
 test.describe('Register test case', () => { 
-    test('Fiver_M1_ARS_01: Register account successfully', async ({page})=>{
+    test('Fiver_M1_ARS_01: Register account successfully', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
         await page.goto(registerPage.url)
@@ -15,15 +16,14 @@ test.describe('Register test case', () => {
             phone: `0323453452`,
             birthday: `1997-08-08`,
             gender:`male`,
+            agreeTerms:true,
         })
 
         //Verify message create account successful
-        const toast = page.getByRole('alert')
-        await expect(toast).toBeVisible()
-        await expect(toast).toHaveText('Đăng kí tài khoản thành công !')
+        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
     })
 
-    test('Fiver_M1_ARS_02: Register an account using an existing username', async ({page}) =>{
+    test('Fiver_M1_ARS_02: Register an account using an existing username', async ({page}) => {
         const registerPage = new RegisterPage(page)
         const name = `nhan`;
         //First register
@@ -36,11 +36,10 @@ test.describe('Register test case', () => {
             phone: `0323453452`,
             birthday: `2000-09-09`,
             gender:`male`,
+            agreeTerms:true,
         })
         //Verify message create account successful
-        const successToast = page.getByRole('alert')
-        await expect(successToast).toBeVisible()
-        await expect(successToast).toContainText('Đăng kí tài khoản thành công !')
+        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
         // Second register (duplicate name)
         await page.goto(registerPage.url)
         await registerPage.register({
@@ -53,12 +52,10 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
         //Expect fail Verify error message "username exist"
-        const errorToast = page.getByRole('alert')  
-        await expect(errorToast).toBeVisible()
-        await expect(errorToast).toContainText('Tên người dùng đã tồn tại !')
+        await expect(registerPage.getStatusPage('Tên người dùng đã tồn tại !')).toBeVisible()
     })
 
-    test('Fiver_M1_ARS_03: Register an account using an existing email', async ({page}) =>{
+    test('Fiver_M1_ARS_03: Register an account using an existing email', async ({page}) => {
         const registerPage = new RegisterPage(page)
         const email = `nhan+${Date.now()}@gmail.com`;
         //===First register
@@ -71,6 +68,7 @@ test.describe('Register test case', () => {
             phone:`0323453452`,
             birthday:`2000-09-09`,
             gender:`male`,
+            agreeTerms:true,
         })
         //Verify message create account successful
         const successToast = page.getByRole('alert')
@@ -93,9 +91,7 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
 
-        const errorToast = page.getByRole('alert')
-        await expect(errorToast).toBeVisible()
-        await expect(errorToast, 'BUG: System allows duplicate email').toContainText('Email đã tồn tại !')
+        await expect(registerPage.getStatusPage('Email đã tồn tại !')).toBeVisible()
         await successToast.waitFor({ state: 'hidden' })
     })
 
@@ -109,14 +105,13 @@ test.describe('Register test case', () => {
             email:`tri${Date.now()}@gmail.com`,
             password:`ndn@1234`,
             confirmpassword:`ndn@1234`,
-            phone:`0876372232`,
+            phone,
             birthday: `1998-10-09`,
             gender:`female`,
+            agreeTerms:true,
         })
         //Verify message create account successful
-        const successToast = page.getByRole('alert')
-        await expect(successToast).toBeVisible()
-        await expect(successToast).toContainText('Đăng kí tài khoản thành công !')
+        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
         // Second register (duplicate name)
         await page.goto(registerPage.url)
         await registerPage.register({
@@ -124,14 +119,12 @@ test.describe('Register test case', () => {
             email:`thy${Date.now()}@gmail.com`,
             password:`ndn@1234`,
             confirmpassword:`ndn@1234`,
-            phone: `0876372232`,
+            phone,
             birthday: `1995-09-09`,
             gender:`male`,
         })
         //Expect fail Verify error message "username exist"
-        const errorToast = page.getByRole('alert')  
-        await expect(errorToast).toBeVisible()
-        await expect(errorToast).toContainText('Số điện thoại đã được đăng ký!')
+        await expect(registerPage.getStatusPage('Số điện thoại đã được đăng ký!')).toBeVisible()
     })
 
     test('Fiver_M1_ARS_05: Register an account with a date of birth that has already been registered',async ({page}) => {
@@ -147,8 +140,9 @@ test.describe('Register test case', () => {
             phone: `0323453452`,
             birthday,
             gender:`male`,
+            agreeTerms:true,
         })
-        await expect(registerPage.successToast).toBeVisible()
+        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
         //Second register
         await page.goto(registerPage.url)
         await registerPage.register({
@@ -159,14 +153,13 @@ test.describe('Register test case', () => {
             phone: `0323254352`,
             birthday,
             gender:`female`,
+            agreeTerms:true,
         })
         //Expect success because a birthday should NOT be the only one.
-        const Toast = page.getByRole('alert')
-        await expect(Toast).toBeVisible()
-        await expect(Toast,'BUG: System should NOT reject registration based on duplicate birthday').toContainText('Đăng kí tài khoản thành công !')
+        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
     })
 
-    test.only('Fiver_M1_ARS_06: Verify the notification when leaving the "your name" field', async ({page}) => {
+    test('Fiver_M1_ARS_06: Verify the notification when leaving the "your name" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
         await page.goto(registerPage.url)
@@ -177,10 +170,135 @@ test.describe('Register test case', () => {
             phone: '0862173946',
             birthday: '2000-01-01',
             gender: 'male',
+            agreeTerms:true,
         })
-        await expect(registerPage.nameError).toBeVisible()
+        await expect(registerPage.getFieldError('Name không được bỏ trống')).toBeVisible()
     })
 
+    test('Fiver_M1_ARS_07: Verify the notification when leaving the "Your Email" field', async ({page}) => {
+      const registerPage = new RegisterPage(page)  
 
+      await page.goto(registerPage.url)
+      await registerPage.register({
+        name:'sam',
+        password:'sam@123',
+        confirmpassword: 'sam@123',
+        phone: '0862173946',
+        birthday: '2000-01-01',
+        gender: 'male',
+        agreeTerms:true,
+      })
+      await expect(registerPage.getFieldError('Email không được bỏ trống')).toBeVisible()
+
+    })
+
+    test('Fiver_M1_ARS_08: Verify the notification when leaving the "Your Password" field', async ({page}) => {
+      const registerPage = new RegisterPage(page)  
+
+      await page.goto(registerPage.url)
+      await registerPage.register({
+        name:'sam',
+        email:'sam@gmail.com',
+        confirmpassword: 'sam@123',
+        phone: '0862173946',
+        birthday: '2000-01-01',
+        gender: 'male',
+        agreeTerms:true,
+      })
+      await expect(registerPage.getFieldError('Password không được bỏ trống')).toBeVisible()
+
+    })
+
+    test('Fiver_M1_ARS_09: Verify the notification when leaving the "Repeat Your Password" field', async ({page}) => {
+        const registerPage = new RegisterPage(page)
+
+        await page.goto(registerPage.url)
+        await registerPage.register({
+            name:`nhan`,
+            email:`nhan${Date.now()}@gmail.com`,
+            password:`12345678`,
+            phone: `0323453452`,
+            birthday: `1997-08-08`,
+            gender:`male`,
+            agreeTerms:true,
+        })
+        //Verify message create account successful
+        await expect(registerPage.getFieldError('PasswordConfirm không được bỏ trống')).toBeVisible()
+    })
+
+    test('Fiver_M1_ARS_10: Verify the notification when leaving the "Your Phone" field', async ({page}) => {
+        const registerPage = new RegisterPage(page)
+
+        await page.goto(registerPage.url)
+        await registerPage.register({
+            name:`nhan`,
+            email:`nhan${Date.now()}@gmail.com`,
+            password:`sam@123`,
+            confirmpassword: 'sam@123',
+            birthday: `1997-08-08`,
+            gender:`male`,
+            agreeTerms:true,
+        })
+        //Verify message create account successful
+        await expect(registerPage.getFieldError(' Phone không được bỏ trống')).toBeVisible()
+    })
+
+    test('Fiver_M1_ARS_11: Verify the notification when leaving the "Birthday" field', async ({page}) => {
+        const registerPage = new RegisterPage(page)
+
+        await page.goto(registerPage.url)
+        await registerPage.register({
+            name:`nhan`,
+            email:`nhan${Date.now()}@gmail.com`,
+            password:`sam@123`,
+            confirmpassword: 'sam@123',
+            phone: `0323453452`,
+            gender:`male`,
+            agreeTerms:true,
+        })
+        //Verify message create account successful
+        await expect(registerPage.getFieldError(' Birthday không được bỏ trống')).toBeVisible()
+    })
+
+    test('Fiver_M1_ARS_12: Verify the notification when uncheck "I agree all statements in Terms of service" field', async ({page}) => {
+        const registerPage = new RegisterPage(page)
+
+        await page.goto(registerPage.url)
+        await registerPage.register({
+            name:`nhan`,
+            email:`nhan${Date.now()}@gmail.com`,
+            password:`sam@123`,
+            confirmpassword: 'sam@123',
+            phone: `0323453452`,
+            birthday: `1997-08-08`,
+            gender:`male`,
+            agreeTerms:false,
+        })
+        // Verify form don't submit (browser native tooltip)
+        // await expect(page).toHaveURL(registerPage.url)
+        // //Verify checkbox invalid
+        // const valueMissing = await registerPage.agreeCheckbox.evaluate((el: HTMLInputElement) => el.validity.valueMissing)
+        // expect(valueMissing).toBe(true)
+        await expect(page).toHaveScreenshot('agree-checkbox-warning.png', {mask: [registerPage.emailInput]})
+    })
+
+    test('Fiver_M1_ARS_13: Verify notifications when the password and repeat your password are incorrect.', async ({page}) => {
+        const registerPage = new RegisterPage(page)
+
+        await page.goto(registerPage.url)
+        await registerPage.register({
+            name:`nhan`,
+            email:`nhan${Date.now()}@gmail.com`,
+            password:`sam@123`,
+            confirmpassword: '123',
+            phone: `0323453452`,
+            birthday: `1997-08-08`,
+            gender:`male`,
+            agreeTerms:true,
+        })
+        // Verify form don't submit (browser native tooltip)
+        await expect(registerPage.getFieldError('Password phải trùng nhau')).toBeVisible()
+        
+    })
 
 })

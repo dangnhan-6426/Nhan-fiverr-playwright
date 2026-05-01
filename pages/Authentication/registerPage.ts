@@ -14,10 +14,7 @@ export class RegisterPage {
     readonly agreeCheckbox: Locator
     readonly registerButton: Locator
     
-    //Locator status message
-    readonly successToast: Locator
-    readonly nameError: Locator
-
+    //URL
     readonly url: string = 'https://demo4.cybersoft.edu.vn/register'
 
     constructor(page: Page) {
@@ -33,11 +30,20 @@ export class RegisterPage {
         this.femaleRadio = page.locator('#female')
         this.agreeCheckbox = page.locator('#agree-term')
         this.registerButton = page.locator('button[type="submit"]')
-        this.successToast = page.locator('div[role="alert"]').filter({hasText:'Đăng kí tài khoản thành công !'})
-        this.nameError = page.locator('span.text-danger').filter({ hasText:'Name không được bỏ trống'})
+        
     }
 
-    //From submit
+    //Create method for warning status register
+    getStatusPage(messageStatus:string){
+        return this.page.getByRole('alert').filter({ hasText: messageStatus})
+    }
+
+    //Create method for warning register form submit input
+    getFieldError(errorTextInput:string){
+        return this.page.locator('span.text-danger', { hasText: errorTextInput})
+    }
+
+    //Form submit
     async register(data: { 
         name?: string,
         email?: string,
@@ -46,6 +52,7 @@ export class RegisterPage {
         phone?: string,
         birthday?: string,
         gender?: 'male'|'female',
+        agreeTerms?: boolean,
     }): Promise<void>{
         await this.nameInput.waitFor({ state: 'visible' })
         await this.nameInput.fill(data.name ?? '')
@@ -54,12 +61,19 @@ export class RegisterPage {
         await this.confirmPasswordInput.fill(data.confirmpassword ?? '')
         await this.phoneInput.fill(data.phone ?? '')
         await this.birthdayInput.fill(data.birthday ?? '')
+        // Checkbox gender
         if(data.gender === 'male'){
             await this.maleRadio.check()
         }else if(data.gender === 'female'){
             await this.femaleRadio.check()
         }
-        await this.agreeCheckbox.check({ force: true })
+        // Checkbox I agree all statements in Terms of service
+        if(data.agreeTerms === false){
+            await this.agreeCheckbox.uncheck({ force: true })
+        }else{
+            await this.agreeCheckbox.check({ force:true })
+        }
+
         await this.registerButton.click({ force: true })
     }
 
@@ -68,4 +82,9 @@ export class RegisterPage {
         return this.page.url() !== this.url
     }
 
+
+    
+
+
+    
 }
