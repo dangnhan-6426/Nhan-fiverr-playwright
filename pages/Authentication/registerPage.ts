@@ -33,7 +33,17 @@ export class RegisterPage {
         
     }
 
-    //From submit
+    //Create method for warning status register
+    getStatusPage(messageStatus:string){
+        return this.page.getByRole('alert').filter({ hasText: messageStatus})
+    }
+
+    //Create method for warning register form submit input
+    getFieldError(errorTextInput:string){
+        return this.page.locator('span.text-danger', { hasText: errorTextInput})
+    }
+
+    //Form submit
     async register(data: { 
         name?: string,
         email?: string,
@@ -42,6 +52,7 @@ export class RegisterPage {
         phone?: string,
         birthday?: string,
         gender?: 'male'|'female',
+        agreeTerms?: boolean,
     }): Promise<void>{
         await this.nameInput.waitFor({ state: 'visible' })
         await this.nameInput.fill(data.name ?? '')
@@ -50,12 +61,19 @@ export class RegisterPage {
         await this.confirmPasswordInput.fill(data.confirmpassword ?? '')
         await this.phoneInput.fill(data.phone ?? '')
         await this.birthdayInput.fill(data.birthday ?? '')
+        // Checkbox gender
         if(data.gender === 'male'){
             await this.maleRadio.check()
         }else if(data.gender === 'female'){
             await this.femaleRadio.check()
         }
-        await this.agreeCheckbox.check({ force: true })
+        // Checkbox I agree all statements in Terms of service
+        if(data.agreeTerms === false){
+            await this.agreeCheckbox.uncheck({ force: true })
+        }else{
+            await this.agreeCheckbox.check({ force:true })
+        }
+
         await this.registerButton.click({ force: true })
     }
 
@@ -64,15 +82,6 @@ export class RegisterPage {
         return this.page.url() !== this.url
     }
 
-    //Create method for warning status register
-    getStatusPage(messageStatus:string){
-        return this.page.getByRole('alert').filter({ hasText: messageStatus})
-    }
-
-    //Create method for warning register from submit input
-    getFieldError(errorTextInput:string){
-        return this.page.locator('span.text-danger', { hasText: errorTextInput})
-    }
 
     
 
