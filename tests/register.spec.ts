@@ -4,10 +4,12 @@ import  { test, expect } from '@playwright/test';
 
 
 test.describe('Register test case', () => { 
+    
     test('Fiver_M1_ARS_01: Register account successfully', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`nhan`,
             email:`nhan${Date.now()}@gmail.com`,
@@ -27,7 +29,8 @@ test.describe('Register test case', () => {
         const registerPage = new RegisterPage(page)
         const name = `nhan`;
         //First register
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name,
             email:`nhan${Date.now()}@gmail.com`,
@@ -41,7 +44,8 @@ test.describe('Register test case', () => {
         //Verify message create account successful
         await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
         // Second register (duplicate name)
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name,
             email:`nhan${Date.now()}@gmail.com`,
@@ -59,7 +63,8 @@ test.describe('Register test case', () => {
         const registerPage = new RegisterPage(page)
         const email = `nhan+${Date.now()}@gmail.com`;
         //===First register
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`nhanmot`,
             email,
@@ -71,16 +76,11 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        const successToast = page.getByRole('alert')
-        await expect(successToast).toBeVisible()
-        await expect(successToast).toContainText('Đăng kí tài khoản thành công !')
-
-        // Chờ toast ẩn hoặc page navigate xong trước khi goto lần 2
-        await successToast.waitFor({ state: 'hidden' }) // ✅ chờ toast biến mất
+        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
 
         // ===Second register (duplicate email)
-        await page.goto(registerPage.url)
-        await page.waitForLoadState('networkidle')
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`nhanhai`,
             email,
@@ -92,14 +92,15 @@ test.describe('Register test case', () => {
         })
 
         await expect(registerPage.getStatusPage('Email đã tồn tại !')).toBeVisible()
-        await successToast.waitFor({ state: 'hidden' })
+        // await successToast.waitFor({ state: 'hidden' })
     })
 
     test('Fiver_M1_ARS_04: Register an account using your registered phone number.',async ({page}) => {
         const registerPage = new RegisterPage(page)
         const phone = `0708878498`;
 
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`tri`,
             email:`tri${Date.now()}@gmail.com`,
@@ -113,7 +114,8 @@ test.describe('Register test case', () => {
         //Verify message create account successful
         await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
         // Second register (duplicate name)
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`thy`,
             email:`thy${Date.now()}@gmail.com`,
@@ -131,7 +133,8 @@ test.describe('Register test case', () => {
         const registerPage = new RegisterPage(page)
         const birthday = `1998-09-09`;
         //First register
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`bao`,
             email:`bao${Date.now()}@gmail.com`,
@@ -144,7 +147,8 @@ test.describe('Register test case', () => {
         })
         await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
         //Second register
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`trong`,
             email:`trong${Date.now()}@gmail.com`,
@@ -161,8 +165,8 @@ test.describe('Register test case', () => {
 
     test('Fiver_M1_ARS_06: Verify the notification when leaving the "your name" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
-
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             email: 'sam@gmail.com',
             password: 'sam@123',
@@ -178,7 +182,8 @@ test.describe('Register test case', () => {
     test('Fiver_M1_ARS_07: Verify the notification when leaving the "Your Email" field', async ({page}) => {
       const registerPage = new RegisterPage(page)  
 
-      await page.goto(registerPage.url)
+      //Access go to url 
+      await registerPage.navigateToRegisterPage()
       await registerPage.register({
         name:'sam',
         password:'sam@123',
@@ -195,7 +200,8 @@ test.describe('Register test case', () => {
     test('Fiver_M1_ARS_08: Verify the notification when leaving the "Your Password" field', async ({page}) => {
       const registerPage = new RegisterPage(page)  
 
-      await page.goto(registerPage.url)
+      //Access go to url 
+        await registerPage.navigateToRegisterPage()
       await registerPage.register({
         name:'sam',
         email:'sam@gmail.com',
@@ -212,7 +218,8 @@ test.describe('Register test case', () => {
     test('Fiver_M1_ARS_09: Verify the notification when leaving the "Repeat Your Password" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`nhan`,
             email:`nhan${Date.now()}@gmail.com`,
@@ -229,7 +236,8 @@ test.describe('Register test case', () => {
     test('Fiver_M1_ARS_10: Verify the notification when leaving the "Your Phone" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
-        await page.goto(registerPage.url)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`nhan`,
             email:`nhan${Date.now()}@gmail.com`,
@@ -245,8 +253,9 @@ test.describe('Register test case', () => {
 
     test('Fiver_M1_ARS_11: Verify the notification when leaving the "Birthday" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
+        //Access go to url 
+        await registerPage.navigateToRegisterPage()
 
-        await page.goto(registerPage.url)
         await registerPage.register({
             name:`nhan`,
             email:`nhan${Date.now()}@gmail.com`,
@@ -263,7 +272,7 @@ test.describe('Register test case', () => {
     test('Fiver_M1_ARS_12: Verify the notification when uncheck "I agree all statements in Terms of service" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
-        await page.goto(registerPage.url)
+        await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`nhan`,
             email:`nhan${Date.now()}@gmail.com`,
@@ -284,8 +293,9 @@ test.describe('Register test case', () => {
 
     test('Fiver_M1_ARS_13: Verify notifications when the password and repeat your password are incorrect.', async ({page}) => {
         const registerPage = new RegisterPage(page)
+         //Access go to url 
+        await registerPage.navigateToRegisterPage()
 
-        await page.goto(registerPage.url)
         await registerPage.register({
             name:`nhan`,
             email:`nhan${Date.now()}@gmail.com`,
