@@ -7,12 +7,13 @@ test.describe('Administrator testcase', ()=>{
         const loginPage = new LoginPage(page)
 
         await loginPage.navigateToLoginPage()
-        await loginPage.login(
-            adminAccount.email,
-            adminAccount.password
-        )
-
+        await loginPage.login({
+            email:adminAccount.email,
+            password:adminAccount.password
+        })
+        //Verify status message
         await expect (loginPage.getStatusPage('Đăng nhập tài khoản thành công !')).toBeVisible()
-        await loginPage.isLoginSuccess()
+        //Verify URL have /admin
+        await loginPage.isLoginSuccess('admin')
     })
 })
