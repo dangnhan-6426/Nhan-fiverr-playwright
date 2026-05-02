@@ -30,10 +30,13 @@ export class LoginPage {
         await this.page.goto(this.url)
     }
 
-    async login(email: string, password: string): Promise<void>{
-        await this.emailInput.fill(email,{timeout: 1000})
-        await this.passwordInput.fill(password,{timeout: 1000})
-        await this.loginButton.click({timeout:1000})
+    async login(data:{
+        email: string, 
+        password: string
+    }): Promise<void>{
+        await this.emailInput.fill(data.email)
+        await this.passwordInput.fill(data.password)
+        await this.loginButton.click()
     }
 
     //Function verify result login success
