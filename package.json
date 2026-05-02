@@ -6,7 +6,10 @@
   "scripts": {
     "test:register": "playwright test register --project=chromium --headed",
     "test:register:snapshot": "playwright test register --project=chromium --headed --update-snapshots",
-    "test:logout": "playwright test tests/logout.spec.ts --project=chromium --headed"
+    "test:logout": "playwright test tests/logout.spec.ts --project=chromium --headed",
+    "test:login": "playwright test tests/login.spec.ts --project=chromium --headed",
+    "test:admin":"playwright test tests/admin.spec.ts --project=chromium --headed"
+    
   },
   "repository": {
     "type": "git",

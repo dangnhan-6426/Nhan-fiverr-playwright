@@ -76,7 +76,10 @@ export class RegisterPage {
 
         await this.registerButton.click({ force: true })
     }
-
+    //Function go to url
+    async navigateToRegisterPage(): Promise<void>{
+        await this.page.goto(this.url)
+    }
     //Function check result register account success
     async isRegisterSuccess(): Promise<boolean>{
         return this.page.url() !== this.url
