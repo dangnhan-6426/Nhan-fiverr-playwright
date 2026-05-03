@@ -20,22 +20,31 @@ export class LoginPage {
         this.loginButton = page.locator('button[type="submit"]')
         this.loginLink = page.locator('xpath=//a[@href="/login" and @class="active"]')
     }
-    //Create method for warning status register
+    //Create method for warning status login
     getStatusPage(messageStatus:string){
         return this.page.getByRole('alert').filter({ hasText: messageStatus})
     }
-
+    //Create method for warning input message login
+    getErrorMessage(messageStatus:string){
+        return this.page.locator('span.text-danger',{ hasText: messageStatus})
+    }
     //Function verify access url login
     async navigateToLoginPage(): Promise<void>{
         await this.page.goto(this.url)
     }
 
+    //Clear input
+    async clearInput(): Promise <void>{
+        await this.emailInput.clear()
+        await this.passwordInput.clear()
+    }
+
     async login(data:{
-        email: string, 
-        password: string
+        email?: string, 
+        password?: string
     }): Promise<void>{
-        await this.emailInput.fill(data.email)
-        await this.passwordInput.fill(data.password)
+        await this.emailInput.fill(data.email ?? '')
+        await this.passwordInput.fill(data.password ?? '')
         await this.loginButton.click()
     }
 
