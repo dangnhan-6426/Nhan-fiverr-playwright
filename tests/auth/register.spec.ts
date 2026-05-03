@@ -1,4 +1,4 @@
-import { RegisterPage } from './../pages/Authentication/registerPage';
+import { RegisterPage } from '../../pages/Authentication/registerPage';
 import  { test, expect } from '@playwright/test';
 
 
@@ -269,7 +269,7 @@ test.describe('Register test case', () => {
         await expect(registerPage.getFieldError(' Birthday không được bỏ trống')).toBeVisible()
     })
 
-    test('Fiver_M1_ARS_12: Verify the notification when uncheck "I agree all statements in Terms of service" field', async ({page}) => {
+    test.only('Fiver_M1_ARS_12: Verify the notification when uncheck "I agree all statements in Terms of service" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
         await registerPage.navigateToRegisterPage()
@@ -288,7 +288,7 @@ test.describe('Register test case', () => {
         // //Verify checkbox invalid
         // const valueMissing = await registerPage.agreeCheckbox.evaluate((el: HTMLInputElement) => el.validity.valueMissing)
         // expect(valueMissing).toBe(true)
-        await expect(page).toHaveScreenshot('agree-checkbox-warning.png', {mask: [registerPage.emailInput]})
+        await expect(page).toHaveScreenshot('agree-checkbox-warning.png')
     })
 
     test('Fiver_M1_ARS_13: Verify notifications when the password and repeat your password are incorrect.', async ({page}) => {

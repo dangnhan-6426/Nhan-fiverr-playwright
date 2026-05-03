@@ -1,6 +1,6 @@
-import { adminAccount } from './../data/account';
+import { adminAccount } from "../../data/account";
 import test, { expect } from "@playwright/test";
-import { LoginPage } from "../pages/Authentication/loginPage";
+import { LoginPage } from "../../pages/Authentication/loginPage";
 
 test.describe('Administrator testcase', ()=>{
     test.only('Fiver_AP_1: Verify login successful with account registered', async({ page })=>{
