@@ -85,6 +85,16 @@ export class RegisterPage {
         return this.page.url() !== this.url
     }
 
+    //Clear Input
+    async clearInput(): Promise<void>{
+        await this.nameInput.clear()
+        await this.emailInput.clear()
+        await this.passwordInput.clear()
+        await this.confirmPasswordInput.clear()
+        await this.phoneInput.clear()
+        await this.birthdayInput.clear()
+    }
+
 
     
 
