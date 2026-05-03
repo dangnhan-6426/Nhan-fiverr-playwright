@@ -1,9 +1,9 @@
-import { loginData } from './../data/account';
+import { loginData } from "../../data/account";
 import { test, expect } from "@playwright/test";
-import { LoginPage } from "../pages/Authentication/loginPage";
+import { LoginPage } from '../../pages/Authentication/loginPage'; 
 
 
-test.describe('Login testcase',()=>{
+test.describe('Testcase login',()=>{
 
     test('Fiver_M1_ARS_14: Verify login successful with account registered', async({ page })=>{
         const loginPage = new LoginPage(page)

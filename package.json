@@ -9,6 +9,8 @@
     "test:logout": "playwright test tests/logout.spec.ts --project=chromium --headed",
     "test:login": "playwright test tests/login.spec.ts --project=chromium --headed",
     "test:login:snapshot":"playwright test tests/login.spec.ts --project=chromium --headed --update-snapshots",
+    "test:search":"playwright test search --project=chromium --headed",
+    "test:search:snapshot":"playwright test search --project=chromium --headed --update-snapshots",
     "test:admin":"playwright test tests/admin.spec.ts --project=chromium --headed"
     
   },

@@ -1,4 +1,4 @@
-import { LoginPage } from './../pages/Authentication/loginPage';
+import { LoginPage } from '../../pages/Authentication/loginPage';
 import { test, expect } from "@playwright/test";
 
 test.describe('Logout FUnctionality', () => {
@@ -6,7 +6,9 @@ test.describe('Logout FUnctionality', () => {
         //Dependency Login successful
         const loginPage = new LoginPage(page)
         await loginPage.navigateToLoginPage()
-        await loginPage.login('cao@gmail.com', '12345678')
+        await loginPage.login({
+            email:'cao@gmail.com', 
+            password:'12345678'})
         await page.waitForTimeout(1000) // Waiting 1s verify login successful
     })
 
