@@ -15,11 +15,10 @@ export class RegisterPage {
     readonly registerButton: Locator
     
     //URL
-    readonly url: string = 'https://demo4.cybersoft.edu.vn/register'
+    readonly registerUrl: string = `${process.env.BASE_URL}/register`
 
     constructor(page: Page) {
         this.page = page
-        //getByRole, getByLabel, getByPlaceholder, getByText, getByTitle, getByAltText, getByTestId
         this.emailInput = page.locator('#email')
         this.nameInput = page.locator('#name')
         this.passwordInput = page.locator('#password') 
@@ -78,11 +77,11 @@ export class RegisterPage {
     }
     //Function go to url
     async navigateToRegisterPage(): Promise<void>{
-        await this.page.goto(this.url)
+        await this.page.goto(this.registerUrl)
     }
     //Function check result register account success
     async isRegisterSuccess(): Promise<boolean>{
-        return this.page.url() !== this.url
+        return this.page.url() !== this.registerUrl
     }
 
     //Clear Input

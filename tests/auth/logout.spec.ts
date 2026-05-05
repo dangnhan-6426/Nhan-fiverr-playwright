@@ -7,8 +7,9 @@ test.describe('Logout FUnctionality', () => {
         const loginPage = new LoginPage(page)
         await loginPage.navigateToLoginPage()
         await loginPage.login({
-            email:'cao@gmail.com', 
-            password:'12345678'})
+            email:process.env.USER2_EMAIL ?? 'cao@gmail.com',
+            password:process.env.USER2_PASSWORD ?? '12345678'
+        })
         await page.waitForTimeout(1000) // Waiting 1s verify login successful
     })
 
@@ -24,7 +25,7 @@ test.describe('Logout FUnctionality', () => {
         await page.reload()
         
         //Verify link
-        await expect(page).toHaveURL('https://demo4.cybersoft.edu.vn/login')
+        await expect(page).toHaveURL(`${process.env.BASE_URL_LOGIN}/login`)
 
         //Verify link Signin show
         await expect(loginPage.loginLink).toBeVisible()
