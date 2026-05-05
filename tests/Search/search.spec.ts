@@ -1,4 +1,3 @@
-import { loginData } from './../../data/account';
 import { expect, test } from "@playwright/test";
 import { SearchPage } from "../../pages/Search/searchPage";
 import { keyWordSearch } from '../../data/searchData';
@@ -10,7 +9,7 @@ test.describe('Testcase search', () => {
 
         await searchPage.AccessWebPage()
         await searchPage.search({
-            search: keyWordSearch.key
+            search: 'logo'
         })
         //Verify result after search
         expect(await searchPage.isSearchSuccess(keyWordSearch.key)).toBeTruthy()
