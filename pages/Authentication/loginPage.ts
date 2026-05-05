@@ -10,9 +10,9 @@ export class LoginPage {
     readonly loginLink: Locator;
 
     //URL
-    readonly url: string = "https://demo4.cybersoft.edu.vn/login";
-    readonly profileUrl: string = "https://demo4.cybersoft.edu.vn/profile";
-    readonly adminUrl: string = "https://demo4.cybersoft.edu.vn/admin";
+    readonly loginUrl: string = `${process.env.BASE_URL}/login`;
+    readonly profileUrl: string = `${process.env.BASE_URL}/profile`;
+    readonly adminUrl: string = `${process.env.BASE_URL}/admin`;
 
     constructor(page: Page){
         this.page = page
@@ -31,7 +31,7 @@ export class LoginPage {
     }
     //Function verify access url login
     async navigateToLoginPage(): Promise<void>{
-        await this.page.goto(this.url)
+        await this.page.goto(this.loginUrl)
     }
 
     //Clear input

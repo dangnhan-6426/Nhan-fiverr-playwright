@@ -22,7 +22,7 @@ test.describe('Register test case', () => {
         })
 
         //Verify message create account successful
-        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_02: Register an account using an existing username', async ({page}) => {
@@ -42,7 +42,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
         // Second register (duplicate name)
         //Access go to url 
         await registerPage.navigateToRegisterPage()
@@ -56,7 +56,7 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
         //Expect fail Verify error message "username exist"
-        await expect(registerPage.getStatusPage('Tên người dùng đã tồn tại !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.ERROR_EXISTING_NAME}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_03: Register an account using an existing email', async ({page}) => {
@@ -76,7 +76,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
 
         // ===Second register (duplicate email)
         //Access go to url 
@@ -91,7 +91,7 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
 
-        await expect(registerPage.getStatusPage('Email đã tồn tại !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.ERROR_EXISTING_EMAIL}`)).toBeVisible()
         // await successToast.waitFor({ state: 'hidden' })
     })
 
@@ -112,7 +112,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
         // Second register (duplicate name)
         //Access go to url 
         await registerPage.navigateToRegisterPage()
@@ -126,7 +126,7 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
         //Expect fail Verify error message "username exist"
-        await expect(registerPage.getStatusPage('Số điện thoại đã được đăng ký!')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.ERROR_EXISTING_PHONE}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_05: Register an account with a date of birth that has already been registered',async ({page}) => {
@@ -145,7 +145,7 @@ test.describe('Register test case', () => {
             gender:`male`,
             agreeTerms:true,
         })
-        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
         //Second register
         //Access go to url 
         await registerPage.navigateToRegisterPage()
@@ -160,7 +160,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Expect success because a birthday should NOT be the only one.
-        await expect(registerPage.getStatusPage('Đăng kí tài khoản thành công !')).toBeVisible()
+        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_06: Verify the notification when leaving the "your name" field', async ({page}) => {
@@ -176,7 +176,7 @@ test.describe('Register test case', () => {
             gender: 'male',
             agreeTerms:true,
         })
-        await expect(registerPage.getFieldError('Name không được bỏ trống')).toBeVisible()
+        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_NAME}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_07: Verify the notification when leaving the "Your Email" field', async ({page}) => {
@@ -193,7 +193,7 @@ test.describe('Register test case', () => {
         gender: 'male',
         agreeTerms:true,
       })
-      await expect(registerPage.getFieldError('Email không được bỏ trống')).toBeVisible()
+      await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_EMAIL}`)).toBeVisible()
 
     })
 
@@ -211,7 +211,7 @@ test.describe('Register test case', () => {
         gender: 'male',
         agreeTerms:true,
       })
-      await expect(registerPage.getFieldError('Password không được bỏ trống')).toBeVisible()
+      await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_PASSWORD}`)).toBeVisible()
 
     })
 
@@ -230,7 +230,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getFieldError('PasswordConfirm không được bỏ trống')).toBeVisible()
+        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_CONFIRM_PASSWORD}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_10: Verify the notification when leaving the "Your Phone" field', async ({page}) => {
@@ -248,7 +248,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getFieldError(' Phone không được bỏ trống')).toBeVisible()
+        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_PHONE_NUMBER}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_11: Verify the notification when leaving the "Birthday" field', async ({page}) => {
@@ -266,10 +266,10 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getFieldError(' Birthday không được bỏ trống')).toBeVisible()
+        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_BIRTHDAY}`)).toBeVisible()
     })
 
-    test.only('Fiver_M1_ARS_12: Verify the notification when uncheck "I agree all statements in Terms of service" field', async ({page}) => {
+    test('Fiver_M1_ARS_12: Verify the notification when uncheck "I agree all statements in Terms of service" field', async ({page}) => {
         const registerPage = new RegisterPage(page)
 
         await registerPage.navigateToRegisterPage()
@@ -307,7 +307,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         // Verify form don't submit (browser native tooltip)
-        await expect(registerPage.getFieldError('Password phải trùng nhau')).toBeVisible()
+        await expect(registerPage.getFieldError(`${process.env.ERROR_CONFIRM_PASSWORD_MISMATCH}`)).toBeVisible()
         
     })
 
