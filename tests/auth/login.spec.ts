@@ -7,7 +7,7 @@ test.describe('Testcase login',()=>{
     test('Fiver_M1_ARS_14: Verify login successful with account registered', async({ page })=>{
         const loginPage = new LoginPage(page)
 
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
         await loginPage.login({
             email: process.env.USER2_EMAIL ?? '',
             password: process.env.USER2_PASSWORD ?? ''
@@ -19,7 +19,7 @@ test.describe('Testcase login',()=>{
     test('Fiver_M1_ARS_15: Verify login error when incorrect email but correct password is entered', async({page})=>{
         const loginPage = new LoginPage(page)
 
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
         await loginPage.login({
             email:'cao123@gmail.com',
             password:process.env.USER2_PASSWORD ??''
@@ -31,7 +31,7 @@ test.describe('Testcase login',()=>{
     test('Fiver_M1_ARS_16: Verify login error when correct email but incorrect password is entered', async({page})=>{
         const loginPage = new LoginPage(page)
 
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
         await loginPage.login({
             email:process.env.USER2_EMAIL ?? '',
             password:'cao123'
@@ -43,7 +43,7 @@ test.describe('Testcase login',()=>{
     test('Fiver_M1_ARS_17: Verify login error when incorrect email and incorrect password is entered', async({page})=>{
         const loginPage = new LoginPage(page)
 
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
         await loginPage.login({
             email:'cao123@gmail.com',
             password:'cao123'
@@ -55,7 +55,7 @@ test.describe('Testcase login',()=>{
     test('Fiver_M1_ARS_18: Multiple incorrect password attempts → account locked', async({page})=>{
         const loginPage = new LoginPage(page)
         
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
 
         for(let i = 1; i <= 10; i++){
             await loginPage.clearInput()
@@ -80,7 +80,7 @@ test.describe('Testcase login',()=>{
     test('Fiver_M1_ARS_20: Verify error messages when leaving the email information field blank.', async({page})=>{
         const loginPage = new LoginPage(page)
 
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
         await loginPage.login({
             password:process.env.USER2_PASSWORD ?? ''
         })
@@ -91,7 +91,7 @@ test.describe('Testcase login',()=>{
     test('Fiver_M1_ARS_21: Verify error messages when the password field is left blank.', async({page})=>{
         const loginPage = new LoginPage(page)
 
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
         await loginPage.login({
             email:process.env.USER2_EMAIL ?? '',
         })

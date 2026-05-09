@@ -30,7 +30,7 @@ export class LoginPage {
         return this.page.locator('span.text-danger',{ hasText: messageStatus})
     }
     //Function verify access url login
-    async navigateToLoginPage(): Promise<void>{
+    async accessToLoginPage(): Promise<void>{
         await this.page.goto(this.loginUrl)
     }
 
