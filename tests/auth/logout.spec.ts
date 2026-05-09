@@ -5,10 +5,10 @@ test.describe('Logout FUnctionality', () => {
     test.beforeEach(async ({ page}) => {
         //Dependency Login successful
         const loginPage = new LoginPage(page)
-        await loginPage.navigateToLoginPage()
+        await loginPage.accessToLoginPage()
         await loginPage.login({
-            email:process.env.USER2_EMAIL ?? 'cao@gmail.com',
-            password:process.env.USER2_PASSWORD ?? '12345678'
+            email:process.env.USER2_EMAIL ?? '',
+            password:process.env.USER2_PASSWORD ?? ''
         })
         await page.waitForTimeout(1000) // Waiting 1s verify login successful
     })
@@ -25,7 +25,7 @@ test.describe('Logout FUnctionality', () => {
         await page.reload()
         
         //Verify link
-        await expect(page).toHaveURL(`${process.env.BASE_URL_LOGIN}/login`)
+        await expect(page).toHaveURL(`${process.env.BASE_URL}/login`)
 
         //Verify link Signin show
         await expect(loginPage.loginLink).toBeVisible()

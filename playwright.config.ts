@@ -36,8 +36,9 @@ export default defineConfig({
     trace: 'on-first-retry',
     channel: 'chrome',
     launchOptions: {
-      slowMo: 500, // mỗi action chậm lại 500ms
-    }
+      slowMo: 1000, // mỗi action chậm lại 1000ms
+    },
+    screenshot: 'on'
   },
 
   /* Configure projects for major browsers */

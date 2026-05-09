@@ -4,69 +4,92 @@ export class SearchPage {
     readonly page: Page;
     readonly searchInput: Locator;
     readonly buttonSearch: Locator;
-    readonly resultTitle: Locator;
-    readonly serviceCards: Locator;
-
+    readonly resultMessage: Locator;
+    readonly category: Locator;
+    readonly webPrograming: Locator;
+    //URL
     readonly url: string = "https://demo4.cybersoft.edu.vn/"
 
     constructor(page: Page) {
         this.page = page
         this.searchInput = page.locator('input[name="searchInputCarousel"]').or(page.locator('input[name="resultParam"]').filter({ visible: true}))
         this.buttonSearch = page.getByRole("button", {name: "Search"})
-        this.resultTitle = page.locator('.result-sort').locator('div').first()
-        this.serviceCards = page.locator('div.service-card.card')
+        this.resultMessage = page.locator('div.number-of-result span.pre-title')
+        this.category = page.getByRole('button', {name:'Category'})
+        this.webPrograming = page.locator('ul.dropdown-menu.show li a.dropdown-item', {hasText:'Web Programing'})
     }
 
     //Access go to url
-    async AccessWebPage(): Promise<void>{
+    async accessWebPage(): Promise<void>{
         await this.page.goto(this.url)
     }
 
-    //Clear input
-    async clearInputSearch(): Promise<void>{
+    // Search
+    async searchFeature(keyword: string): Promise<void>{
         await this.searchInput.clear()
-    }
-
-    //Search
-    async search(data:{search?: string}):
-    Promise<void>{
-        await this.searchInput.fill(data.search ?? '')
+        await this.searchInput.fill(keyword)
         await this.buttonSearch.click()
-        await this.page.waitForURL(`**/result/**`)
-        await this.page.waitForLoadState('networkidle')
-        await this.page.waitForTimeout(4000)
-        // Chờ data load xong
-        await this.page.waitForFunction(() => {
-            const el = document.querySelector('.result-sort div')
-            return el && !el.textContent?.includes('0 services')
-        })
-        fs.mkdirSync('tests/Search/screenshots', { recursive: true })
-        await this.page.screenshot({ 
-            path: `tests/Search/screenshots/result-${data.search}.png`, 
-            fullPage: true 
-        })
-        console.log('✅ Chụp xong!')
+        await this.page.waitForURL('**/result/**')
+        if (keyword.trim().length > 0){
+            await this.resultMessage.waitFor({state:'visible'})
+        }
+        await this.page.waitForTimeout(3000)
     }
 
-    //Verify result search
+    //Verify the return of the result URL.
     async isSearchSuccess(keyword: string): Promise<boolean>{
-        await this.page.waitForURL(`**\/result\/${keyword}**`)
-        return this.page.url() === `https://demo4.cybersoft.edu.vn/result/${keyword}`
+        const encodeKeyword = encodeURIComponent(keyword.trim())
+        const currentUrl = this.page.url()
+        return currentUrl.includes (`/result/${encodeKeyword}`)
     }
 
-    //Verify services after search success
-    async getResultCount(): Promise<number>{
-        return await this.serviceCards.count()
+    //Verify services displayed in the search results
+    async getSearchResults(): Promise<string[]> {
+        const results = await this.page.locator('div.service-item').allTextContents()
+        return results.map(result => result.trim()).filter(result => result.length > 0)
     }
 
-    async isResultCountMatch(): Promise<boolean>{
-        //Waiting loading data
-        await this.resultTitle.waitFor({ state: 'visible'})
-        await expect(this.resultTitle).not.toHaveText('0 services available')
-
-        const cardCount = await this.serviceCards.count()
-        const titleText = await this.resultTitle.innerText()
-        const titleCount = parseInt(titleText.match(/\d+/)?.[0] ?? '0')
-        return cardCount === titleCount && cardCount > 0
+    async getServiceCount(): Promise<number>{
+        return await this.page.locator('div.service-card.card').count()
     }
+
+    //Function screen shots
+    async takeScreenShot(name: string): Promise<void>{
+        fs.mkdirSync('tests/Search/screenshots', {recursive: true})
+        await this.page.screenshot({
+            path:`tests/Search/screenshots/${name}.png`,
+            fullPage:true
+        })
+    }
+
+    // Search by button
+    async searchByButton(keyword: string): Promise<number>{
+        await this.searchInput.clear()
+        await this.searchInput.fill(keyword)
+        
+        const start = Date.now()
+        await this.buttonSearch.click()
+        await this.page.waitForURL('**/result**')
+        await this.resultMessage.waitFor({ state: 'visible' })
+        await this.page.waitForTimeout(2000)
+        
+        return Date.now() - start
+    }
+
+    //Search by enter
+    async searchByEnter(keyword: string): Promise<number>{
+        await this.searchInput.clear()
+        await this.searchInput.fill(keyword)
+        
+        const start = Date.now()
+        await this.searchInput.press('Enter')
+        await this.page.waitForURL('**/result**')
+        await this.resultMessage.waitFor({ state: 'visible' })
+        await this.page.waitForTimeout(2000)
+        
+        return Date.now() - start
+    }
+
+
+     
 }
