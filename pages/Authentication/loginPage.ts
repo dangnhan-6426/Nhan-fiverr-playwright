@@ -34,26 +34,28 @@ export class LoginPage {
         await this.page.goto(this.loginUrl)
     }
 
-    //Clear input
-    async clearInput(): Promise <void>{
-        await this.emailInput.clear()
-        await this.passwordInput.clear()
-    }
-
     async login(data:{
         email?: string, 
         password?: string
     }): Promise<void>{
+        await this.emailInput.clear()
+        await this.passwordInput.clear()
         await this.emailInput.fill(data.email ?? '')
         await this.passwordInput.fill(data.password ?? '')
         await this.loginButton.click()
     }
 
-    //Function verify result login success
-    async isLoginSuccess(role: 'user' | 'admin' = 'user'){
-        const path = role === 'admin' ? 'admin' : 'profile'
-        await expect(this.page).toHaveURL(new RegExp(`${path}`))
+    // Verify url have contain /profile
+    async isLoginSuccess():Promise<boolean>{
+        await this.page.waitForURL('**/profile')
+        return this.page.url().includes('/profile')
     }
+
+    //Function verify result login success
+    // async isLoginSuccess(role: 'user' | 'admin' = 'user'){
+    //     const path = role === 'admin' ? 'admin' : 'profile'
+    //     await expect(this.page).toHaveURL(new RegExp(`${path}`))
+    // }
 
     
 }
