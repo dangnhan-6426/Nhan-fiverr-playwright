@@ -1,7 +1,6 @@
 import { expect, Locator } from "@playwright/test";
 import { LoginPage } from "../Authentication/loginPage";
 
-
 export class AdminPage extends LoginPage{
     
 
@@ -13,7 +12,11 @@ export class AdminPage extends LoginPage{
         return this.page.locator(`xpath=//button[text()="${buttonText}"]`)
     }
 
-    getStatusPage(messageStatus: string): Locator {
+    getSuccessMessageToast(messageStatus: string){
+        return this.page.locator('div.text-danger', { hasText: messageStatus })
+    }
+
+    getErrorMessageToast(messageStatus: string){
         return this.page.locator('div.text-danger', { hasText: messageStatus })
     }
 

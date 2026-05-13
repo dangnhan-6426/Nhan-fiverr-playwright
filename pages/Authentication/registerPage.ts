@@ -1,5 +1,5 @@
 import { Locator, Page } from '@playwright/test'
-
+import { URLS } from '../../constants/url'
 export class RegisterPage {
     readonly page: Page
 
@@ -15,7 +15,7 @@ export class RegisterPage {
     readonly registerButton: Locator
     
     //URL
-    readonly registerUrl: string = `${process.env.BASE_URL}/register`
+    readonly registerUrl: string = `${URLS.register}`
 
     constructor(page: Page) {
         this.page = page
@@ -33,10 +33,15 @@ export class RegisterPage {
     }
 
     //Create method for warning status register
-    getStatusPage(messageStatus:string){
+    getSuccessMessageToast(messageStatus:string){
         return this.page.getByRole('alert').filter({ hasText: messageStatus})
     }
 
+    getErrorMessageToast(messageStatus:string){
+        return this.page.getByRole('alert').filter({ hasText: messageStatus})
+    }
+
+    
     //Create method for warning register form submit input
     getFieldError(errorTextInput:string){
         return this.page.locator('span.text-danger', { hasText: errorTextInput})

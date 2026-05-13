@@ -1,6 +1,6 @@
 import {Locator, Page} from "@playwright/test";
 import { expect } from "@playwright/test";
-
+import { URLS } from "../../constants/url";
 export class LoginPage {
     readonly page: Page;
 
@@ -10,9 +10,9 @@ export class LoginPage {
     readonly loginLink: Locator;
 
     //URL
-    readonly loginUrl: string = `${process.env.BASE_URL}/login`;
-    readonly profileUrl: string = `${process.env.BASE_URL}/profile`;
-    readonly adminUrl: string = `${process.env.BASE_URL}/admin`;
+    readonly loginUrl: string = URLS.login;
+    readonly profileUrl: string = URLS.profile;
+    readonly adminUrl: string = URLS.admin;
 
     constructor(page: Page){
         this.page = page
@@ -22,9 +22,14 @@ export class LoginPage {
         this.loginLink = page.locator('xpath=//a[@href="/login" and @class="active"]')
     }
     //Create method for warning status login
-    getStatusPage(messageStatus:string){
-        return this.page.getByRole('alert').filter({ hasText: messageStatus})
+    getSuccessMessageToast(message:string){
+        return this.page.getByRole('alert').filter({ hasText: message})
     }
+
+    getErrorMessageToast(message:string){
+        return this.page.getByRole('alert').filter({ hasText: message})
+    }
+
     //Create method for warning input message login
     getErrorMessage(messageStatus:string){
         return this.page.locator('span.text-danger',{ hasText: messageStatus})
