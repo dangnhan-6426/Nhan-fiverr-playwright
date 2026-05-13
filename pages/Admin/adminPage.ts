@@ -1,9 +1,6 @@
 import { expect } from "@playwright/test";
 import { LoginPage } from "../Authentication/loginPage";
 
-
-
-
 export class AdminPage extends LoginPage{
     
 
