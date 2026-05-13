@@ -1,4 +1,4 @@
-import { expect } from "@playwright/test";
+import { expect, Locator } from "@playwright/test";
 import { LoginPage } from "../Authentication/loginPage";
 
 export class AdminPage extends LoginPage{
@@ -40,5 +40,7 @@ export class AdminPage extends LoginPage{
         await this.page.waitForURL('**/admin')
         return this.page.url().includes('/admin')
     }
+
+
 
 }

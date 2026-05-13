@@ -11,7 +11,9 @@
     "test:login:snapshot": "playwright test login --project=chromium --headed --update-snapshots",
     "test:search": "playwright test search --project=chromium --headed",
     "test:search:snapshot": "playwright test search --project=chromium --headed --update-snapshots",
-    "test:admin": "playwright test admin --project=chromium --headed"
+    "test:loginAdmin": "playwright test loginAdmin --project=chromium --headed",
+    "test:admin":"playwright test admin --project=chromium --headed "
+
   },
   "repository": {
     "type": "git",
@@ -26,7 +28,7 @@
   },
   "homepage": "https://github.com/dangnhan-6426/Nhan-fiverr-playwright#readme",
   "devDependencies": {
-    "@playwright/test": "^1.59.1",
+    "@playwright/test": "^1.60.0",
     "@types/node": "^25.6.0",
     "typescript": "^6.0.3"
   },

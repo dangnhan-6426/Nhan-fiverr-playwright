@@ -5,7 +5,7 @@ import { URLS } from "../../constants/url";
 import { ACCOUNTS } from "../../constants/accounts";
 import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "../../constants/message";
 
-test.describe('Administrator testcase', ()=>{
+test.describe('Testcase Administrator page', ()=>{
     let adminPage : AdminPage
     let loginPage : LoginPage
     test.beforeEach(async ({page}) => {
@@ -44,10 +44,13 @@ test.describe('Administrator testcase', ()=>{
 
     })
 
-    test.only('Fiver_AP_2: Check for invalid administrator account login', async({page})=>{
-        await loginPage.login({
-            email:process.env.USER1_EMAIL ?? '',
-            password: process.env.USER1_PASSWORD ?? ''
+    test('Fiver_AP_5: Verify the notification when the name field is empty', async ({page}) => {
+        await adminPage.getmenuTitle('Manage User').click()
+        await adminPage.addNewAdministrator({
+            name: '',
+            email: `testadmin${Date.now()}@example.com`,
+            password: 'password123',
+            phone: '0341567890'
         })
 
         await expect (loginPage.getErrorMessageToast(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
