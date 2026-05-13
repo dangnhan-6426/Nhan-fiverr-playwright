@@ -1,21 +1,22 @@
 import { LoginPage } from '../../pages/Authentication/loginPage';
 import { test, expect } from "@playwright/test";
-
+import { URLS } from '../../constants/url';
+import { ACCOUNTS } from '../../constants/accounts';
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../constants/message';
 test.describe('Logout FUnctionality', () => {
+    let loginPage : LoginPage
     test.beforeEach(async ({ page}) => {
         //Dependency Login successful
-        const loginPage = new LoginPage(page)
+        loginPage = new LoginPage(page)
         await loginPage.accessToLoginPage()
         await loginPage.login({
-            email:process.env.USER2_EMAIL ?? '',
-            password:process.env.USER2_PASSWORD ?? ''
+            email:ACCOUNTS.user1.email,
+            password:ACCOUNTS.user1.password
         })
         await page.waitForTimeout(1000) // Waiting 1s verify login successful
     })
 
     test('Fiver_M1_ARS_12: Logout by clearing all localStorage data', async ({page})=>{
-        const loginPage = new LoginPage(page)
-
         await page.evaluate(() => localStorage.clear())
 
         //Make sure login successful
@@ -25,7 +26,7 @@ test.describe('Logout FUnctionality', () => {
         await page.reload()
         
         //Verify link
-        await expect(page).toHaveURL(`${process.env.BASE_URL}/login`)
+        await expect(page).toHaveURL(`${URLS.login}`)
 
         //Verify link Signin show
         await expect(loginPage.loginLink).toBeVisible()

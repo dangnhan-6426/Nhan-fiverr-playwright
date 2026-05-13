@@ -1,13 +1,14 @@
 import { RegisterPage } from '../../pages/Authentication/registerPage';
 import  { test, expect } from '@playwright/test';
-
-
+import { ERROR_MESSAGES, SUCCESS_MESSAGES } from '../../constants/message';
 
 test.describe('Register test case', () => { 
-    
+    let registerPage : RegisterPage
+    test.beforeEach(async ({page}) => {
+        registerPage = new RegisterPage(page)
+        await registerPage.navigateToRegisterPage()
+    })
     test('Fiver_M1_ARS_01: Register account successfully', async ({page}) => {
-        const registerPage = new RegisterPage(page)
-
         //Access go to url 
         await registerPage.navigateToRegisterPage()
         await registerPage.register({
@@ -22,11 +23,10 @@ test.describe('Register test case', () => {
         })
 
         //Verify message create account successful
-        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
+        await expect(registerPage.getSuccessMessageToast(`${SUCCESS_MESSAGES.auth.register}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_02: Register an account using an existing username', async ({page}) => {
-        const registerPage = new RegisterPage(page)
         const name = `nhan`;
         //First register
         //Access go to url 
@@ -42,7 +42,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
+        await expect(registerPage.getSuccessMessageToast(`${SUCCESS_MESSAGES.auth.register}`)).toBeVisible()
         // Second register (duplicate name)
         //Access go to url 
         await registerPage.navigateToRegisterPage()
@@ -56,11 +56,10 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
         //Expect fail Verify error message "username exist"
-        await expect(registerPage.getStatusPage(`${process.env.ERROR_EXISTING_NAME}`)).toBeVisible()
+        await expect(registerPage.getErrorMessageToast(`${ERROR_MESSAGES.name.alreadyExists}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_03: Register an account using an existing email', async ({page}) => {
-        const registerPage = new RegisterPage(page)
         const email = `nhan+${Date.now()}@gmail.com`;
         //===First register
         //Access go to url 
@@ -76,7 +75,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
+        await expect(registerPage.getSuccessMessageToast(`${SUCCESS_MESSAGES.auth.register}`)).toBeVisible()
 
         // ===Second register (duplicate email)
         //Access go to url 
@@ -91,14 +90,12 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
 
-        await expect(registerPage.getStatusPage(`${process.env.ERROR_EXISTING_EMAIL}`)).toBeVisible()
+        await expect(registerPage.getErrorMessageToast(`${ERROR_MESSAGES.email.alreadyExists}`)).toBeVisible()
         // await successToast.waitFor({ state: 'hidden' })
     })
 
     test('Fiver_M1_ARS_04: Register an account using your registered phone number.',async ({page}) => {
-        const registerPage = new RegisterPage(page)
         const phone = `0708878498`;
-
         //Access go to url 
         await registerPage.navigateToRegisterPage()
         await registerPage.register({
@@ -112,7 +109,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
+        await expect(registerPage.getSuccessMessageToast(`${SUCCESS_MESSAGES.auth.register}`)).toBeVisible()
         // Second register (duplicate name)
         //Access go to url 
         await registerPage.navigateToRegisterPage()
@@ -126,11 +123,10 @@ test.describe('Register test case', () => {
             gender:`male`,
         })
         //Expect fail Verify error message "username exist"
-        await expect(registerPage.getStatusPage(`${process.env.ERROR_EXISTING_PHONE}`)).toBeVisible()
+        await expect(registerPage.getErrorMessageToast(`${ERROR_MESSAGES.phone.alreadyExists}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_05: Register an account with a date of birth that has already been registered',async ({page}) => {
-        const registerPage = new RegisterPage(page)
         const birthday = `1998-09-09`;
         //First register
         //Access go to url 
@@ -145,7 +141,7 @@ test.describe('Register test case', () => {
             gender:`male`,
             agreeTerms:true,
         })
-        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
+        await expect(registerPage.getSuccessMessageToast(`${SUCCESS_MESSAGES.auth.register}`)).toBeVisible()
         //Second register
         //Access go to url 
         await registerPage.navigateToRegisterPage()
@@ -160,11 +156,10 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Expect success because a birthday should NOT be the only one.
-        await expect(registerPage.getStatusPage(`${process.env.MESSAGE_SUCCESS_REGISTER}`)).toBeVisible()
+        await expect(registerPage.getSuccessMessageToast(`${SUCCESS_MESSAGES.auth.register}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_06: Verify the notification when leaving the "your name" field', async ({page}) => {
-        const registerPage = new RegisterPage(page)
         //Access go to url 
         await registerPage.navigateToRegisterPage()
         await registerPage.register({
@@ -176,12 +171,10 @@ test.describe('Register test case', () => {
             gender: 'male',
             agreeTerms:true,
         })
-        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_NAME}`)).toBeVisible()
+        await expect(registerPage.getFieldError(`${ERROR_MESSAGES.name.empty}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_07: Verify the notification when leaving the "Your Email" field', async ({page}) => {
-      const registerPage = new RegisterPage(page)  
-
       //Access go to url 
       await registerPage.navigateToRegisterPage()
       await registerPage.register({
@@ -193,13 +186,11 @@ test.describe('Register test case', () => {
         gender: 'male',
         agreeTerms:true,
       })
-      await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_EMAIL}`)).toBeVisible()
+      await expect(registerPage.getFieldError(`${ERROR_MESSAGES.email.emptyAlt}`)).toBeVisible()
 
     })
 
     test('Fiver_M1_ARS_08: Verify the notification when leaving the "Your Password" field', async ({page}) => {
-      const registerPage = new RegisterPage(page)  
-
       //Access go to url 
         await registerPage.navigateToRegisterPage()
       await registerPage.register({
@@ -211,13 +202,11 @@ test.describe('Register test case', () => {
         gender: 'male',
         agreeTerms:true,
       })
-      await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_PASSWORD}`)).toBeVisible()
+      await expect(registerPage.getFieldError(`${ERROR_MESSAGES.password.emptyAlt}`)).toBeVisible()
 
     })
 
     test('Fiver_M1_ARS_09: Verify the notification when leaving the "Repeat Your Password" field', async ({page}) => {
-        const registerPage = new RegisterPage(page)
-
         //Access go to url 
         await registerPage.navigateToRegisterPage()
         await registerPage.register({
@@ -230,12 +219,10 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_CONFIRM_PASSWORD}`)).toBeVisible()
+        await expect(registerPage.getFieldError(`${ERROR_MESSAGES.confirmPassword.empty}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_10: Verify the notification when leaving the "Your Phone" field', async ({page}) => {
-        const registerPage = new RegisterPage(page)
-
         //Access go to url 
         await registerPage.navigateToRegisterPage()
         await registerPage.register({
@@ -248,11 +235,10 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_PHONE_NUMBER}`)).toBeVisible()
+        await expect(registerPage.getFieldError(`${ERROR_MESSAGES.phone.empty}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_11: Verify the notification when leaving the "Birthday" field', async ({page}) => {
-        const registerPage = new RegisterPage(page)
         //Access go to url 
         await registerPage.navigateToRegisterPage()
 
@@ -266,12 +252,11 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         //Verify message create account successful
-        await expect(registerPage.getFieldError(`${process.env.ERROR_EMPTY_BIRTHDAY}`)).toBeVisible()
+        await expect(registerPage.getFieldError(`${ERROR_MESSAGES.birthday.empty}`)).toBeVisible()
     })
 
     test('Fiver_M1_ARS_12: Verify the notification when uncheck "I agree all statements in Terms of service" field', async ({page}) => {
-        const registerPage = new RegisterPage(page)
-
+        //Access go to url
         await registerPage.navigateToRegisterPage()
         await registerPage.register({
             name:`nhan`,
@@ -292,7 +277,6 @@ test.describe('Register test case', () => {
     })
 
     test('Fiver_M1_ARS_13: Verify notifications when the password and repeat your password are incorrect.', async ({page}) => {
-        const registerPage = new RegisterPage(page)
          //Access go to url 
         await registerPage.navigateToRegisterPage()
 
@@ -307,7 +291,7 @@ test.describe('Register test case', () => {
             agreeTerms:true,
         })
         // Verify form don't submit (browser native tooltip)
-        await expect(registerPage.getFieldError(`${process.env.ERROR_CONFIRM_PASSWORD_MISMATCH}`)).toBeVisible()
+        await expect(registerPage.getFieldError(`${ERROR_MESSAGES.confirmPassword.mismatch}`)).toBeVisible()
         
     })
 

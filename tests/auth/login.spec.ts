@@ -13,7 +13,7 @@ test.describe('Testcase login',()=>{
             email: process.env.USER2_EMAIL ?? '',
             password: process.env.USER2_PASSWORD ?? ''
         })
-        await expect (loginPage.getStatusPage(`${process.env.MESSAGE_LOGIN_SUCCESSFUL}`)).toBeVisible()
+        await expect (loginPage.getSuccessMessageToast(`${process.env.MESSAGE_LOGIN_SUCCESSFUL}`)).toBeVisible()
         expect(await loginPage.isLoginSuccess()).toBeTruthy()
     })
 
@@ -22,7 +22,7 @@ test.describe('Testcase login',()=>{
             email:'cao123@gmail.com',
             password:process.env.USER2_PASSWORD ??''
         })
-        await expect (loginPage.getStatusPage(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
+        await expect (loginPage.getErrorMessageToast(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
         await expect(page).toHaveURL(loginPage.loginUrl)
     })
 
@@ -31,7 +31,7 @@ test.describe('Testcase login',()=>{
             email:process.env.USER2_EMAIL ?? '',
             password:'cao123'
         })
-        await expect (loginPage.getStatusPage(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
+        await expect (loginPage.getErrorMessageToast(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
         await expect(page).toHaveURL(loginPage.loginUrl)
     })
 
@@ -40,7 +40,7 @@ test.describe('Testcase login',()=>{
             email:'cao123@gmail.com',
             password:'cao123'
         })
-        await expect (loginPage.getStatusPage(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
+        await expect (loginPage.getErrorMessageToast(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
         await expect(page).toHaveURL(loginPage.loginUrl)
     })
 
@@ -54,7 +54,7 @@ test.describe('Testcase login',()=>{
             console.log(`Times ${i}: Login Fail`)
 
             await expect(
-                loginPage.getStatusPage(process.env.ERROR_WRONG_EMAIL_OR_PASSWORD ?? '').first()
+                loginPage.getErrorMessageToast(process.env.ERROR_WRONG_EMAIL_OR_PASSWORD ?? '').first()
             ).toBeVisible()
             // Close the toast box before the next baking session.
             if (i < 10) {
@@ -66,7 +66,7 @@ test.describe('Testcase login',()=>{
         // Verification gets locked after 10 attempts — test FAILED if the app isn't locked.
         await expect(page).toHaveURL(loginPage.loginUrl)
         await expect(
-            loginPage.getStatusPage(process.env.ERROR_ACCOUNT_LOCKED ?? 'account locked')
+            loginPage.getErrorMessageToast(process.env.ERROR_ACCOUNT_LOCKED ?? 'account locked')
         ).toBeVisible()
         await page.screenshot({ path: 'tests/auth/screenshots/login-blocked.png', fullPage: true })
     })
@@ -75,7 +75,7 @@ test.describe('Testcase login',()=>{
         await loginPage.login({
             password:process.env.USER2_PASSWORD ?? ''
         })
-        await expect (loginPage.getErrorMessage(`${process.env.ERROR_EMPTY_EMAIL}`)).toBeVisible()
+        await expect (loginPage.getErrorMessageToast(`${process.env.ERROR_EMPTY_EMAIL}`)).toBeVisible()
         await expect(page).toHaveURL(loginPage.loginUrl)
     })
 
