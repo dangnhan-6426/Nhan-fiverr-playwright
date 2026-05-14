@@ -4,7 +4,7 @@ import { LoginPage } from "../Authentication/loginPage";
 export class AdminPage extends LoginPage{
     
 
-    getmenuTitle(menuTitle:string){
+    getMenuTitle(menuTitle:string){
         return this.page.locator('ul.mt-3 li a',{ hasText: menuTitle})
     }
 

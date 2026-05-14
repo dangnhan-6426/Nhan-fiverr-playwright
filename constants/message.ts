@@ -8,6 +8,7 @@ export const ERROR_MESSAGES = {
     invalidFormatAlt: "Email không đúng định dạng",
     alreadyExists: "Email đã tồn tại !",
     wrongEmailOrPassword: "Email hoặc mật khẩu không đúng !",
+    charaterLimitAlt: "Email không được vượt quá 255 ký tự",
   },
 
   // ===== Password =====
@@ -28,6 +29,8 @@ export const ERROR_MESSAGES = {
   name: {
     empty: "Name không được bỏ trống",
     alreadyExists: "Tên người dùng đã tồn tại !",
+    invalidFormat: "Name Không đúng định dạng",
+    characterLimitAlt: "Name không được vượt quá 255 ký tự",
   },
 
   // ===== Phone =====
