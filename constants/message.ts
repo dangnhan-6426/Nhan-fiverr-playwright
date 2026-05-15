@@ -68,6 +68,7 @@ export const SUCCESS_MESSAGES = {
   // ===== Admin =====
   admin: {
     createAccount: "Thêm quản trị thành công !",
+    updateAccount: "Cập nhật thông tin thành công !",
     delete: "Xóa thành công",
   },
 } as const;

@@ -12,7 +12,6 @@ export class LoginPage {
     //URL
     readonly loginUrl: string = URLS.login;
     readonly profileUrl: string = URLS.profile;
-    readonly adminUrl: string = URLS.admin;
 
     constructor(page: Page){
         this.page = page

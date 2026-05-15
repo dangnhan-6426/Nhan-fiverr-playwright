@@ -17,7 +17,9 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: ACCOUNTS.admin.password
         })
         await expect(adminPage.page).toHaveURL(URLS.admin)
+        await adminPage.waitForToastHide()
         await adminPage.getMenuTitle('Manage User').click()  
+        await expect(adminPage.page).toHaveURL(URLS.adminUserManagement)
     })
 
     test('Fiver_AP_3: Verify add new administrator successfully', async ({page}) => {
@@ -43,8 +45,6 @@ test.describe('Testcase Add New Administrator', ()=>{
         })
         //Verify status message
         await expect(adminPage.getErrorMessageToast(ERROR_MESSAGES.email.alreadyExists)).toBeVisible()
-        //Verify URL still on /admin/qlnd
-        await expect(page).toHaveURL(URLS.adminUserManagement)  
 
     })
 
@@ -55,12 +55,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: '0341567890'
         })
-
-        await expect (loginPage.getErrorMessageToast(`${process.env.ERROR_WRONG_EMAIL_OR_PASSWORD}`)).toBeVisible()
-        await expect(page).toHaveURL(loginPage.loginUrl)
-
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.name.empty}`)).toBeVisible()
-        await expect(page).toHaveURL(URLS.adminUserManagement)  
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.name.empty}`)).toBeVisible() 
     })
 
     test('Fiver_AP_6: Verify the notification when the email field is empty', async ({page}) => {
@@ -70,7 +65,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: '0341567890'
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.email.emptyAlt}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.email.emptyAlt}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)  
     })
 
@@ -81,7 +76,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: '',
             phone: '0341567890'
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.password.emptyAlt}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.password.emptyAlt}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)  
     })
 
@@ -92,7 +87,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: ''
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.phone.empty}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.phone.empty}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)  
 
     })
@@ -105,7 +100,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: '0341567890'
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.email.charaterLimitAlt}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.email.charaterLimitAlt}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
     })
 
@@ -117,7 +112,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: '0341567890'
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.email.invalidFormatAlt}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.email.invalidFormatAlt}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
     })
 
@@ -129,7 +124,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: '0341567890'
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.name.characterLimitAlt}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.name.characterLimitAlt}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
     })
 
@@ -141,11 +136,11 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: '0341567890'
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.name.invalidFormat}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.name.invalidFormat}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
     })
 
-    test.only('Fiver_AP_13: Check for error messages when passwords exceed 32 characters', async ({page}) => {
+    test('Fiver_AP_13: Check for error messages when passwords exceed 32 characters', async ({page}) => {
         const longPassword = `password${'a'.repeat(33)}`
         await adminPage.addNewAdministrator({
             name: 'test admin',
@@ -153,11 +148,12 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: longPassword,
             phone: '0341567890'
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.password.characterLimit}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.password.characterLimit}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
         
     })
-    test.only('Fiver_AP_14: Check for the error message indicating that more than 10 characters have been entered in the Phone information field', async ({page}) => {
+
+    test('Fiver_AP_14: Check for the error message indicating that more than 10 characters have been entered in the Phone information field', async ({page}) => {
         const longPhone = `03415678901`
         await adminPage.addNewAdministrator({
             name: 'test admin',
@@ -165,9 +161,75 @@ test.describe('Testcase Add New Administrator', ()=>{
             password: 'password123',
             phone: longPhone
         })
-        await expect(adminPage.getErrorMessageToast(`${ERROR_MESSAGES.phone.invalidFormat}`)).toBeVisible()
+        await expect(adminPage.getFieldError(`${ERROR_MESSAGES.phone.invalidFormat}`)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
         
     })
+
+    test('Fiver_AP_15: Search username registered', async ({page}) => {
+        const searchName = 'nhan'
+        await adminPage.searchInput.click()
+        await adminPage.searchUsername(searchName)
+        //Verify the search result have contain username
+        expect(await adminPage.isSearchResultContainUsername(searchName)).toBeTruthy()
+    })
+
+    test('Fiver_AP_16: Search username not registered', async ({page}) => {
+        const searchName = `justatest`
+        await adminPage.searchInput.click()
+        await adminPage.searchUsername(searchName) 
+        //Verify the search result have contain username
+        expect(await adminPage.isSearchResultContainUsername(searchName)).toBeFalsy()
+        await expect(adminPage.noData).toBeVisible()   
+    })
+
+    test('Fiver_AP_17: Check for user feature updates', async ({page}) => {
+        const searchName = 'test admin'
+        await adminPage.searchInput.click()
+        await adminPage.searchUsername(searchName)
+        await adminPage.getButtonDefault('View & Edit').first().click()
+        await adminPage.updateUser({
+            name: 'test admin updated',
+            phone: '0341567890',
+            birthday: '1990-01-01',
+            gender: 'Male',
+            role: 'Admin',
+            certification: 'Certified Admin',
+            skill: 'Admin Skills'
+        })
+        //Verify status message
+        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES.admin.updateAccount)).toBeVisible()
+        await expect(page).toHaveURL(URLS.adminUserManagement)
+        
+        await adminPage.waitForToastHide()
+        await adminPage.searchUsername('test admin updated')    
+        await adminPage.getButtonDefault('View & Edit').first().click()
+        //Verify the updated information
+        await expect(adminPage.nameInputUpdate).toHaveValue('test admin updated')
+        await expect(adminPage.phoneInputUpdate).toHaveValue('0341567890')
+        await expect(adminPage.birthdayInputUpdate).toHaveValue('1990-01-01')
+        await expect(adminPage.maleInputUpdate).toBeChecked()
+        await expect(adminPage.femaleInputUpdate).not.toBeChecked()
+        await expect(adminPage.roleInputUpdate).toHaveValue('Admin')
+        await expect(adminPage.getCertificationChipByText('Certified Admin')).toBeVisible()
+        await expect(adminPage.getSkillChipByText('Admin Skills')).toBeVisible()
+    })
+
+    test('Fiver_AP_18: Delete user', async ({page}) => {
+        const searchName = 'test admin updated'
+        await adminPage.searchInput.click()
+        await adminPage.searchUsername(searchName)
+        await adminPage.deleteUser()
+        //Verify status message
+        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES.admin.delete)).toBeVisible()
+        await expect(page).toHaveURL(URLS.adminUserManagement)
+        await adminPage.waitForToastHide()
+        await adminPage.searchUsername(searchName)
+        //Verify the search result have contain username        
+        expect(await adminPage.isSearchResultContainUsername(searchName)).toBeFalsy()
+        await expect(adminPage.noData).toBeVisible()
+    })
+
+
 
 })
