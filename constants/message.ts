@@ -84,6 +84,8 @@ export const SUCCESS_MESSAGES_ADMIN = {
   },
   //Service
   service:{
-    createService:"Thêm mới thành công!"
+    createService:"Thêm mới thành công!",
+    updateService:"Cập nhật thành công!",
+    deleteService:"Xóa thành công!"
   }
 } as const;

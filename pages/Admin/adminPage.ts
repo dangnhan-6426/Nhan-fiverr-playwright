@@ -248,7 +248,7 @@ export class AdminPage{
         await this.page.waitForTimeout(1000)
         return await this.getLastJobId()
     }
-
+    //Delete job
     async deleteJob(jobId: number): Promise<void>{
         await this.page.locator('tr.ant-table-row')
         .filter({ hasText: String(jobId)})
@@ -267,24 +267,91 @@ export class AdminPage{
 
     //========= Manage Service ===========
     async addNewService(data:{
-        jobID?:string,
-        hirerID?:string,
-        hireDate?:string,
+        jobID?: string,
+        hirerID?: string,
+        hireDate?: string,
         condition?: 'complete' | 'incomplete'
-    }):Promise<void>{
+    }): Promise<number>{ // ← đổi void thành number
         await this.getButtonAdd('ADD SERVICE').click()
-        await this.jobIDInput.fill(data.jobID??'')
-        await this.hirerIDInput.fill(data.hirerID??'')
-        await this.hireDateInput.fill(data.hireDate??'')
+        await this.jobIDInput.fill(data.jobID ?? '')
+        await this.hirerIDInput.fill(data.hirerID ?? '')
+        await this.hireDateInput.fill(data.hireDate ?? '')
 
         if(data.condition === 'complete'){
             await this.completeInput.check()
-        }else if(data.condition === 'incomplete'){
+        } else if(data.condition === 'incomplete'){
             await this.incompleteInput.check()
         }
         await this.getButtonAdd('ADD').click()
+        await this.page.waitForLoadState('networkidle')
+        return await this.getLastServiceId() // ← lấy ID vừa tạo
     }
 
+    async getLastServiceId(): Promise<number> {
+        const lastPageBtn = this.page.locator('li.ant-pagination-item').last()
+        await lastPageBtn.click()
+        await this.page.waitForLoadState('networkidle')
+        const idText = await this.page.locator('tr.ant-table-row')
+            .last()
+            .locator('td.ant-table-cell')
+            .first()
+            .innerText()
+        return parseInt(idText)
+    }
+    //Update service
+    async updateService(data:{
+        serviceId: number,
+        jobID?: string,
+        hirerID?: string,
+        hireDate?: string,
+        condition?: 'complete' | 'incomplete'
+    }): Promise<void> {
+        // Navigate back to the last page to find the newly created service
+        const lastPageBtn = this.page.locator('li.ant-pagination-item').last()
+        await lastPageBtn.click()
+        await this.page.waitForLoadState('networkidle')
+
+        // Find the row with the specific serviceId and click "View & Edit"
+        const rows = this.page.locator('tr.ant-table-row')
+        const count = await rows.count()
+        for(let i = 0; i < count; i++){
+            const firstCell = await rows.nth(i).locator('td.ant-table-cell').first().innerText()
+            if(firstCell.trim() === String(data.serviceId)){
+                await rows.nth(i).getByRole('button', { name: 'View & Edit' }).click()
+                break
+            }
+        }
+
+        await this.jobIDInput.clear()
+        await this.jobIDInput.fill(data.jobID ?? '')
+        await this.hirerIDInput.clear()
+        await this.hirerIDInput.fill(data.hirerID ?? '')
+        await this.hireDateInput.clear()
+        await this.hireDateInput.fill(data.hireDate ?? '')
+
+        if(data.condition === 'complete'){
+            await this.completeInput.check()
+        } else if(data.condition === 'incomplete'){
+            await this.incompleteInput.check()
+        }
+        await this.getButtonAdd('Save').click()
+    }
+
+    async deleteService(serviceId: number): Promise<void> {
+        const lastPageBtn = this.page.locator('li.ant-pagination-item').last()
+        await lastPageBtn.click()
+        await this.page.waitForLoadState('networkidle')
+        // Find the row with the specific serviceId and click "Delete"
+        const rows = this.page.locator('tr.ant-table-row')
+        const count = await rows.count()
+        for(let i = 0; i < count; i++){
+            const firstCell = await rows.nth(i).locator('td.ant-table-cell').first().innerText()
+            if(firstCell.trim() === String(serviceId)){
+                await rows.nth(i).getByRole('button', { name: 'DEL' }).click()
+                break
+            }
+        }
+    }
     // Verify url have contain /AdminPage
     async isLoginSuccess():Promise<boolean>{
         await this.page.waitForURL(URLS.admin)
