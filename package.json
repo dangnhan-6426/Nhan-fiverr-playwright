@@ -12,7 +12,8 @@
     "test:search": "playwright test search --project=chromium --headed",
     "test:search:snapshot": "playwright test search --project=chromium --headed --update-snapshots",
     "test:loginAdmin": "playwright test loginAdmin --project=chromium --headed",
-    "test:addNewAdmin":"playwright test addNewAdmin --project=chromium --headed "
+    "test:addNewAdmin":"playwright test addNewAdmin --project=chromium --headed ",
+    "test:addNewJob":"playwright test addJob --project=chromium --headed "
 
   },
   "repository": {

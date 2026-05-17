@@ -64,12 +64,26 @@ export const SUCCESS_MESSAGES = {
   job: {
     rent: "Thuê công việc thành công !",
   },
+} as const;
 
   // ===== Admin =====
+export const SUCCESS_MESSAGES_ADMIN = {
   admin: {
     createAccount: "Thêm quản trị thành công !",
     updateAccount: "Cập nhật thông tin thành công !",
     delete: "Xóa thành công",
   },
+  //Job
+  job: {
+    create: "Thêm công việc thành công!",
+    delete: "Xóa thành công!",
+  },
+  //JobType
+  jobType:{
+    createJT: "Thêm mới thành công!",
+  },
+  //Service
+  service:{
+    createService:"Thêm mới thành công!"
+  }
 } as const;
-
