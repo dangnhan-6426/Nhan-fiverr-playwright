@@ -1,9 +1,9 @@
+import { SUCCESS_MESSAGES, SUCCESS_MESSAGES_ADMIN, ERROR_MESSAGES } from './../../constants/message';
 import test, { expect } from "@playwright/test";
 import { LoginPage } from "../../pages/Authentication/loginPage";
 import { AdminPage } from "../../pages/Admin/adminPage";
 import { URLS } from "../../constants/url";
 import { ACCOUNTS } from "../../constants/accounts";
-import { SUCCESS_MESSAGES, ERROR_MESSAGES } from "../../constants/message";
 
 test.describe('Testcase Add New Administrator', ()=>{
     let adminPage : AdminPage
@@ -31,7 +31,7 @@ test.describe('Testcase Add New Administrator', ()=>{
         })
             
         //Verify status message
-        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES.admin.createAccount)).toBeVisible()      
+        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES_ADMIN.admin.createAccount)).toBeVisible()      
         //Verify URL have /admin/qlnd
         await expect(page).toHaveURL(URLS.adminUserManagement)
     });
@@ -198,7 +198,7 @@ test.describe('Testcase Add New Administrator', ()=>{
             skill: 'Admin Skills'
         })
         //Verify status message
-        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES.admin.updateAccount)).toBeVisible()
+        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES_ADMIN.admin.updateAccount)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
         
         await adminPage.waitForToastHide()
@@ -221,7 +221,7 @@ test.describe('Testcase Add New Administrator', ()=>{
         await adminPage.searchUsername(searchName)
         await adminPage.deleteUser()
         //Verify status message
-        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES.admin.delete)).toBeVisible()
+        await expect(adminPage.getSuccessMessageToast(SUCCESS_MESSAGES_ADMIN.admin.delete)).toBeVisible()
         await expect(page).toHaveURL(URLS.adminUserManagement)
         await adminPage.waitForToastHide()
         await adminPage.searchUsername(searchName)
@@ -229,7 +229,5 @@ test.describe('Testcase Add New Administrator', ()=>{
         expect(await adminPage.isSearchResultContainUsername(searchName)).toBeFalsy()
         await expect(adminPage.noData).toBeVisible()
     })
-
-
 
 })
