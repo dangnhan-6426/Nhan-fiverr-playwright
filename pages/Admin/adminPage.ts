@@ -1,12 +1,16 @@
 import { expect, Locator, Page } from "@playwright/test";
 import { URLS } from "../../constants/url";
+import { lookup } from "dns";
 
 
 export class AdminPage{
     readonly page: Page;
 //Locator
+    readonly dropdownIcon: Locator;
+    readonly dropdownMenu: Locator;
+    readonly btnLogout: Locator;
+    readonly btnUpdateInfo: Locator;
 //========== Manage User ==========
-
     //Add new admin
     //readonly addNewAdminButton: Locator;
     readonly nameInput: Locator;
@@ -54,6 +58,11 @@ export class AdminPage{
     constructor(page:Page){
         this.page = page    
 
+        this.dropdownIcon = page.locator('#dropdownMenu2');
+        this.dropdownMenu = page.locator('ul.dropdown-menu.p-0');
+        this.btnLogout = page.locator('button.dropdown-item', { hasText: 'Đăng Xuất' });
+        this.btnUpdateInfo = page.locator('button.dropdown-item', { hasText: 'Cập Nhật Thông Tin' });
+        
         // Manage User
         //Add new Admin
         this.nameInput = page.locator('#name')

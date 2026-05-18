@@ -72,6 +72,7 @@ export const SUCCESS_MESSAGES_ADMIN = {
     createAccount: "Thêm quản trị thành công !",
     updateAccount: "Cập nhật thông tin thành công !",
     delete: "Xóa thành công",
+    logout: "Đăng xuất thành công !"
   },
   //Job
   job: {
